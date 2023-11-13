@@ -3,22 +3,47 @@ import React from "react";
 import styled from "styled-components";
 import { useGlobalState } from "../../context/globalProvider";
 import Image from "next/image";
+import menu from "@/app/utils/menu";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 const Sidebar = () => {
   const { theme } = useGlobalState();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleClick = (link: string) => {
+    router.push(link);
+  };
 
   return (
     <SidebarStyled theme={theme}>
       <div className="profile">
-        <div className="profile-overlay">
-          <div className="image">
-            <Image width={70} height={70} src="/0.png" alt="profile img" />
-          </div>
-          <h1>
-            <span>Kemal</span>
-            <span>Legi</span>
-          </h1>
+        <div className="profile-overlay"></div>
+        <div className="image">
+          <Image width={70} height={70} src="/0.png" alt="profile img" />
         </div>
-        <ul className="nav-items"></ul>
+        <h1>
+          <span>Kemal</span>
+          <span>Legi</span>
+        </h1>
+
+        <ul className="nav-items">
+          {menu.map((item) => {
+            const link = item.link;
+            return (
+              <li
+                key={item.id}
+                // className={`nav-item ${pathname === link ? "active" : ""}`}
+                onClick={() => {
+                  handleClick(link);
+                }}
+              >
+                {item.icon}
+                <Link href={link}>{item.title}</Link>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </SidebarStyled>
   );
@@ -36,34 +61,6 @@ const SidebarStyled = styled.nav`
   justify-content: space-between;
 
   color: ${(props) => props.theme.colorGrey3};
-
-  @media screen and (max-width: 768px) {
-    position: fixed;
-    height: calc(100vh - 2rem);
-    z-index: 100;
-
-    transition: all 0.3s cubic-bezier(0.53, 0.21, 0, 1);
-
-    .toggle-nav {
-      display: block !important;
-    }
-  }
-
-  .toggle-nav {
-    display: none;
-    padding: 0.8rem 0.9rem;
-    position: absolute;
-    right: -69px;
-    top: 1.8rem;
-
-    border-top-right-radius: 1rem;
-    border-bottom-right-radius: 1rem;
-
-    background-color: ${(props) => props.theme.colorBg2};
-    border-right: 2px solid ${(props) => props.theme.borderColor2};
-    border-top: 2px solid ${(props) => props.theme.borderColor2};
-    border-bottom: 2px solid ${(props) => props.theme.borderColor2};
-  }
 
   .user-btn {
     .cl-rootBox {
