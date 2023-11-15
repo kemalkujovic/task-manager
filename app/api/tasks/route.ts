@@ -1,3 +1,4 @@
+import prisma from "@/app/utils/connect";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
@@ -24,6 +25,19 @@ export async function POST(req: Request) {
         status: 400,
       });
     }
+
+    const task = await prisma.task.create({
+      data: {
+        title,
+        description,
+        date,
+        isComplated: completed,
+        isImportant: important,
+        userId,
+      },
+    });
+    console.log("task created", task);
+    return NextResponse.json(task);
   } catch (error) {
     console.log("ERROR CREATING TASK:", error);
     return NextResponse.json({ error: "Error creating task", status: 500 });
