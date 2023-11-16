@@ -2,9 +2,9 @@
 import { useGlobalState } from "@/app/context/globalProvider";
 import React from "react";
 import styled from "styled-components";
-import CreateContent from "../Modals/CreateContent";
 import TaskItem from "../TaskItem/TaskItem";
 import { plus } from "@/app/utils/Icons";
+import CreateContent from "../Modals/CreateContent";
 
 type Props = {
   title: string;
@@ -12,10 +12,10 @@ type Props = {
 };
 
 const Tasks = ({ title, tasks }: Props) => {
-  const { theme } = useGlobalState();
-
+  const { theme, isLoading } = useGlobalState();
   return (
     <TaskStyled theme={theme}>
+      <CreateContent />
       <h1>{title}</h1>
       <div className="tasks grid">
         {tasks.map((task) => (
@@ -24,7 +24,7 @@ const Tasks = ({ title, tasks }: Props) => {
             title={task.title}
             description={task.description}
             date={task.date}
-            isCompleted={task.completed}
+            isComplated={task.isComplated}
             id={task.id}
           />
         ))}
