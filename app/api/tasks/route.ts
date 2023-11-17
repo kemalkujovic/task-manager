@@ -37,7 +37,6 @@ export async function POST(req: Request) {
       },
     });
 
-    console.log("task created", task);
     return NextResponse.json(task);
   } catch (error) {
     console.log("ERROR CREATING TASK:", error);
@@ -59,8 +58,6 @@ export async function GET(req: Request) {
       },
     });
 
-    console.log("tasks:", tasks);
-
     return NextResponse.json(tasks);
   } catch (error) {
     console.log("ERROR GETTTING TASK:", error);
@@ -72,18 +69,23 @@ export async function PUT(req: Request) {
   try {
     const { userId } = auth();
 
-    const { isComplated, id } = await req.json();
+    const { isComplated, id, title, description, date, isImportant } =
+      await req.json();
 
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized", status: 401 });
     }
-
+    console.log("Id: ", id);
     const task = await prisma.task.update({
       where: {
-        id,
+        id: id,
       },
       data: {
+        title,
+        description,
+        date,
         isComplated,
+        isImportant,
       },
     });
 

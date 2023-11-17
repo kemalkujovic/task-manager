@@ -11,14 +11,21 @@ type Props = {
   title: string;
   description: string;
   date: string;
-  isComplated: boolean;
   id: string;
+  isComplated: boolean;
+  isImportant: boolean;
 };
 
-function TaskItem({ title, description, date, isComplated, id }: Props) {
-  const { theme, deleteTask, updateTask, openModal, modal } = useGlobalState();
+function TaskItem({
+  title,
+  description,
+  date,
+  isComplated,
+  id,
+  isImportant,
+}: Props) {
+  const { theme, deleteTask, updateTask } = useGlobalState();
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-
   const handleEditClick = () => {
     setEditModalOpen(true);
   };
@@ -28,12 +35,13 @@ function TaskItem({ title, description, date, isComplated, id }: Props) {
   };
 
   const taskData = {
-    title: "Existing Title",
-    description: "Existing Description",
-    date: "2023-01-01",
-    completed: false,
-    important: true,
-    id: "sdsa",
+    title: title,
+    description: description,
+    date: date,
+    completed: isComplated,
+    important: isImportant,
+    id: id,
+    onClose: handleCloseEditModal,
   };
   return (
     <>

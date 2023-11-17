@@ -27,6 +27,7 @@ const Tasks = ({ title, tasks }: Props) => {
             description={task.description}
             date={task.date}
             isComplated={task.isComplated}
+            isImportant={task.isImportant}
             id={task.id}
           />
         ))}

@@ -16,6 +16,7 @@ type Props = {
     completed: boolean;
     important: boolean;
     id: string;
+    onClose: () => void;
   };
 };
 
@@ -25,8 +26,11 @@ function CreateContent({ taskData }: Props) {
   const [date, setDate] = useState(taskData?.date || "");
   const [completed, setCompleted] = useState(taskData?.completed || false);
   const [important, setImportant] = useState(taskData?.important || false);
-  console.log(taskData);
-  const { theme, allTasks, closeModal } = useGlobalState();
+
+  const { theme, allTasks, closeModal, updateTask } = useGlobalState();
+
+  const isEditMode = !!taskData;
+  let res: any;
 
   const handleChange = (name: string) => (e: any) => {
     switch (name) {
@@ -62,14 +66,28 @@ function CreateContent({ taskData }: Props) {
     };
 
     try {
-      const res = await axios.post("/api/tasks", task);
+      if (isEditMode) {
+        const task = {
+          id: taskData.id,
+          title: title,
+          description: description,
+          date: date,
+          isComplated: completed,
+          isImportant: important,
+        };
 
-      if (res.data.error) {
-        toast.error(res.data.erorr);
+        updateTask(task);
+        taskData.onClose();
+      } else {
+        res = await axios.post("/api/tasks", task);
       }
 
-      if (!res.data.error) {
-        toast.success("Task created successfuly");
+      if (res && res.data.error) {
+        toast.error(res.data.error);
+      }
+
+      if (res && !res.data.error) {
+        toast.success("Task created successfully");
         allTasks();
         closeModal();
       }
@@ -81,7 +99,7 @@ function CreateContent({ taskData }: Props) {
 
   return (
     <CreateContentStyled onSubmit={handleSubmit} theme={theme}>
-      <h1>Create a Task</h1>
+      <h1>{isEditMode ? "Update a Task" : "Create a Task"}</h1>
       <div className="input-control">
         <label htmlFor="title">Title</label>
         <input
@@ -140,7 +158,7 @@ function CreateContent({ taskData }: Props) {
       <div className="submit-btn flex justify-end">
         <Button
           type="submit"
-          name="Create Task"
+          name={isEditMode ? "Update Task" : "Create Task"}
           icon={plus}
           padding="0.6rem 1.5rem"
           borderRad="0.8rem"
