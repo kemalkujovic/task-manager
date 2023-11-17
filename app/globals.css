@@ -23,6 +23,8 @@ body {
   height: 100vh;
 }
 
+
+
 input[type='date']::-webkit-calendar-picker-indicator{
   filter: invert(1);
   font-size: 1.5rem;
@@ -47,6 +49,9 @@ input[type='checkbox']{
   transform: translateZ(0);
 }
 
+.cl-internal-b3fm6y{
+  display: none;
+}
 @keyframes mulShdSpin {
   0%,
   100% {

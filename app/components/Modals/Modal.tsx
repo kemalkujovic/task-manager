@@ -2,20 +2,26 @@
 
 import { useGlobalState } from "@/app/context/globalProvider";
 import React from "react";
+import ReactDOM from "react-dom";
 import styled from "styled-components";
 
 type Props = {
   content: React.ReactNode;
+  onClose?: () => void;
 };
 
-function Modal({ content }: Props) {
+function Modal({ content, onClose }: Props) {
   const { closeModal, theme } = useGlobalState();
 
-  return (
+  return ReactDOM.createPortal(
     <ModalStyled theme={theme}>
-      <div className="modal-overlay" onClick={closeModal}></div>
+      <div
+        className="modal-overlay"
+        onClick={onClose ? onClose : closeModal}
+      ></div>
       <div className="modal-content">{content}</div>
-    </ModalStyled>
+    </ModalStyled>,
+    document.getElementById("modal-root")!
   );
 }
 

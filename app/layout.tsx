@@ -46,6 +46,7 @@ export default function RootLayout({
               <div className="w-full">{children}</div>
             </GlobalStylesProvider>
           </ContextProvider>
+          <div id="modal-root"></div>
         </body>
       </html>
     </ClerkProvider>

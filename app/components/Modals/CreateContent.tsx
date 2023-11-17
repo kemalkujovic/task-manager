@@ -8,13 +8,24 @@ import styled from "styled-components";
 import Button from "../Button/Button";
 import { plus } from "@/app/utils/Icons";
 
-function CreateContent() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [date, setDate] = useState("");
-  const [completed, setCompleted] = useState(false);
-  const [important, setImportant] = useState(false);
+type Props = {
+  taskData?: {
+    title: string;
+    description: string;
+    date: string;
+    completed: boolean;
+    important: boolean;
+    id: string;
+  };
+};
 
+function CreateContent({ taskData }: Props) {
+  const [title, setTitle] = useState(taskData?.title || "");
+  const [description, setDescription] = useState(taskData?.description || "");
+  const [date, setDate] = useState(taskData?.date || "");
+  const [completed, setCompleted] = useState(taskData?.completed || false);
+  const [important, setImportant] = useState(taskData?.important || false);
+  console.log(taskData);
   const { theme, allTasks, closeModal } = useGlobalState();
 
   const handleChange = (name: string) => (e: any) => {
@@ -106,6 +117,7 @@ function CreateContent() {
       <div className="input-control toggler">
         <label htmlFor="completed">Toggle Completed</label>
         <input
+          checked={completed}
           value={completed.toString()}
           onChange={handleChange("completed")}
           type="checkbox"
@@ -116,6 +128,7 @@ function CreateContent() {
       <div className="input-control toggler">
         <label htmlFor="important">Toggle Important</label>
         <input
+          checked={important}
           value={important.toString()}
           onChange={handleChange("important")}
           type="checkbox"

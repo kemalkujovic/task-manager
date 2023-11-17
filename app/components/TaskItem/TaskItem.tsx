@@ -2,9 +2,11 @@
 
 import { useGlobalState } from "@/app/context/globalProvider";
 import { edit, trash } from "@/app/utils/Icons";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import formatDate from "@/app/utils/formatDate";
+import Modal from "../Modals/Modal";
+import CreateContent from "../Modals/CreateContent";
 type Props = {
   title: string;
   description: string;
@@ -14,46 +16,74 @@ type Props = {
 };
 
 function TaskItem({ title, description, date, isComplated, id }: Props) {
-  const { theme, deleteTask, updateTask } = useGlobalState();
+  const { theme, deleteTask, updateTask, openModal, modal } = useGlobalState();
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+
+  const handleEditClick = () => {
+    setEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setEditModalOpen(false);
+  };
+
+  const taskData = {
+    title: "Existing Title",
+    description: "Existing Description",
+    date: "2023-01-01",
+    completed: false,
+    important: true,
+    id: "sdsa",
+  };
   return (
-    <TaskItemStyled theme={theme}>
-      <h1>{title}</h1>
-      <p>{description}</p>
-      <p className="date">{formatDate(date)}</p>
-      <div className="task-footer">
-        {isComplated ? (
-          <button
-            className="completed"
-            onClick={() => {
-              const task = {
-                id,
-                isComplated: !isComplated,
-              };
-              updateTask(task);
-            }}
-          >
-            Completed
-          </button>
-        ) : (
-          <button
-            className="incomplete"
-            onClick={() => {
-              const task = {
-                id,
-                isComplated: !isComplated,
-              };
-              updateTask(task);
-            }}
-          >
-            Incomplete
-          </button>
+    <>
+      <TaskItemStyled theme={theme}>
+        {isEditModalOpen && (
+          <Modal
+            content={<CreateContent taskData={taskData} />}
+            onClose={handleCloseEditModal}
+          />
         )}
-        <button className="edit">{edit}</button>
-        <button className="delete" onClick={() => deleteTask(id)}>
-          {trash}
-        </button>
-      </div>
-    </TaskItemStyled>
+        <h1>{title}</h1>
+        <p>{description}</p>
+        <p className="date">{formatDate(date)}</p>
+        <div className="task-footer">
+          {isComplated ? (
+            <button
+              className="completed"
+              onClick={() => {
+                const task = {
+                  id,
+                  isComplated: !isComplated,
+                };
+                updateTask(task);
+              }}
+            >
+              Completed
+            </button>
+          ) : (
+            <button
+              className="incomplete"
+              onClick={() => {
+                const task = {
+                  id,
+                  isComplated: !isComplated,
+                };
+                updateTask(task);
+              }}
+            >
+              Incomplete
+            </button>
+          )}
+          <button className="edit" onClick={handleEditClick}>
+            {edit}
+          </button>
+          <button className="delete" onClick={() => deleteTask(id)}>
+            {trash}
+          </button>
+        </div>
+      </TaskItemStyled>
+    </>
   );
 }
 
