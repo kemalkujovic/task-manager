@@ -12,7 +12,7 @@ type Props = {
   description: string;
   date: string;
   id: string;
-  isComplated: boolean;
+  isCompleted: boolean;
   isImportant: boolean;
 };
 
@@ -20,7 +20,7 @@ function TaskItem({
   title,
   description,
   date,
-  isComplated,
+  isCompleted,
   id,
   isImportant,
 }: Props) {
@@ -38,7 +38,7 @@ function TaskItem({
     title: title,
     description: description,
     date: date,
-    completed: isComplated,
+    completed: isCompleted,
     important: isImportant,
     id: id,
     onClose: handleCloseEditModal,
@@ -56,13 +56,13 @@ function TaskItem({
         <p>{description}</p>
         <p className="date">{formatDate(date)}</p>
         <div className="task-footer">
-          {isComplated ? (
+          {isCompleted ? (
             <button
               className="completed"
               onClick={() => {
                 const task = {
                   id,
-                  isComplated: !isComplated,
+                  isCompleted: !isCompleted,
                 };
                 updateTask(task);
               }}
@@ -75,7 +75,7 @@ function TaskItem({
               onClick={() => {
                 const task = {
                   id,
-                  isComplated: !isComplated,
+                  isCompleted: !isCompleted,
                 };
                 updateTask(task);
               }}

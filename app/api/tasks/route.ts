@@ -31,7 +31,7 @@ export async function POST(req: Request) {
         title,
         description,
         date,
-        isComplated: completed,
+        isCompleted: completed,
         isImportant: important,
         userId,
       },
@@ -39,7 +39,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json(task);
   } catch (error) {
-    console.log("ERROR CREATING TASK:", error);
     return NextResponse.json({ error: "Error creating task", status: 500 });
   }
 }
@@ -60,7 +59,6 @@ export async function GET(req: Request) {
 
     return NextResponse.json(tasks);
   } catch (error) {
-    console.log("ERROR GETTTING TASK:", error);
     return NextResponse.json({ error: "Error getting task", status: 500 });
   }
 }
@@ -69,7 +67,7 @@ export async function PUT(req: Request) {
   try {
     const { userId } = auth();
 
-    const { isComplated, id, title, description, date, isImportant } =
+    const { isCompleted, id, title, description, date, isImportant } =
       await req.json();
 
     if (!userId) {
@@ -83,14 +81,13 @@ export async function PUT(req: Request) {
         title,
         description,
         date,
-        isComplated,
+        isCompleted,
         isImportant,
       },
     });
 
     return NextResponse.json(task);
   } catch (error) {
-    console.log("ERROR UPDATING TASK:", error);
     return NextResponse.json({ error: "Error updateing task", status: 500 });
   }
 }

@@ -72,7 +72,7 @@ function CreateContent({ taskData }: Props) {
           title: title,
           description: description,
           date: date,
-          isComplated: completed,
+          isCompleted: completed,
           isImportant: important,
         };
 
@@ -93,7 +93,6 @@ function CreateContent({ taskData }: Props) {
       }
     } catch (error) {
       toast.error("Something went wrong.");
-      console.log(error);
     }
   };
 

@@ -42,9 +42,7 @@ export const GlobalProvider = ({ children }) => {
       });
       setTasks(sortedData);
       setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const deleteTask = async (id) => {
@@ -54,7 +52,6 @@ export const GlobalProvider = ({ children }) => {
       toast.success("Task deleted");
       allTasks();
     } catch (error) {
-      console.log(error);
       toast.error("Something went wrong");
     }
   };
@@ -67,14 +64,13 @@ export const GlobalProvider = ({ children }) => {
 
       allTasks();
     } catch (error) {
-      console.log(error);
       toast.error("Something went wrong");
     }
   };
 
-  const completedTasks = tasks.filter((task) => task.isComplated);
+  const completedTasks = tasks.filter((task) => task.isCompleted);
   const importantTasks = tasks.filter((task) => task.isImportant);
-  const incompleteTasks = tasks.filter((task) => !task.isComplated);
+  const incompleteTasks = tasks.filter((task) => !task.isCompleted);
 
   useEffect(() => {
     if (user) allTasks();

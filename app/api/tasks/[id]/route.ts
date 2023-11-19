@@ -23,7 +23,6 @@ export async function DELETE(
 
     return NextResponse.json(task);
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error: "Error deleting task", status: 500 });
   }
 }
