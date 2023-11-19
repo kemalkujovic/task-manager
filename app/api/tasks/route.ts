@@ -75,7 +75,6 @@ export async function PUT(req: Request) {
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized", status: 401 });
     }
-    console.log("Id: ", id);
     const task = await prisma.task.update({
       where: {
         id: id,
